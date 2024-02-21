@@ -1,1 +1,3 @@
 curl_cffi>=0.5.9
+aiohttp-proxy>=0.1.2
+better-proxy>=1.1.0
