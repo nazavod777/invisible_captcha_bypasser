@@ -1,6 +1,6 @@
-import asyncio
 import re
 
+from better_proxy import Proxy
 from curl_cffi.requests import AsyncSession
 from curl_cffi.requests import Response
 
@@ -42,8 +42,12 @@ class ReCaptcha:
 
     @classmethod
     async def solve_recaptcha(cls,
-                              anchor_url: str) -> str:
-        async with AsyncSession() as client:
+                              anchor_url: str,
+                              proxy: str | None = None) -> str:
+        async with AsyncSession(proxies={
+            'http': proxy,
+            'https': proxy
+        } if proxy else None) as client:
             data = cls.parse_url(anchor_url=anchor_url)
 
             token: str = await cls.get_recaptcha_token(endpoint=data['endpoint'],
@@ -63,3 +67,17 @@ class ReCaptcha:
                                                                      client=client)
 
         return captcha_response
+
+
+async def solve_captcha(anchor_url: str,
+                        proxy: str | None = None) -> str:
+    formatted_proxy: None = None
+    if proxy:
+        try:
+            formatted_proxy: str = Proxy.from_str(proxy=proxy).as_url
+
+        except ValueError:
+            pass
+
+    return await ReCaptcha.solve_recaptcha(anchor_url=anchor_url,
+                                           proxy=formatted_proxy)
