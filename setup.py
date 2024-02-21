@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='invisible_captcha_bypasser',
-    version='0.0.1',
+    version='0.0.2',
     author='nazavod',
     author_email='n4z4v0d@gmail.com',
     description='Bypassing invisible recaptcha v3',
@@ -16,7 +16,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/nazavod777/invisible_captcha_bypasser',
     packages=find_packages(),
-    install_requires=['curl_cffi>=0.5.9'],
+    install_requires=['curl_cffi>=0.5.9', 'aiohttp-proxy>=0.1.2', 'better-proxy>=1.1.0'],
     classifiers=[
         'Programming Language :: Python :: 3.11',
         'License :: OSI Approved :: MIT License',
